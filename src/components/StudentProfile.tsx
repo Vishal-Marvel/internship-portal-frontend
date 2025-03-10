@@ -59,7 +59,7 @@ const formSchema = z.object({
   }, "Phone number is invalid"),
   total_days_internship: z.number().nullable(),
   placement_status: z.string().optional(),
-  placed_company: z.string().nullable(),
+  placed_company: z.string().optional(),
   file: z.instanceof(FileList).optional(),
   mentor_name: z.string(),
   skills: z
@@ -139,6 +139,7 @@ const StudentProfile = ({ student }: Props) => {
 
   useEffect(() => {
     if (student) {
+      setYears([student.batch]);
       form.setValue("name", student.name);
       form.setValue("sec_sit", student.sec_sit);
       form.setValue("batch", student.batch);
@@ -170,7 +171,6 @@ const StudentProfile = ({ student }: Props) => {
         return;
       }
       const formdata = new FormData();
-
       formdata.append("name", values.name);
       formdata.append("section", values.section);
       formdata.append("batch", values.batch);
