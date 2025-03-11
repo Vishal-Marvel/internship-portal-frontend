@@ -292,7 +292,7 @@ const StudentSignIn = () => {
                                 Sri Sairam Engineering College
                               </SelectItem>
                               <SelectItem value="sit">
-                                Sairam Institure Of Technology
+                                Sairam Institute Of Technology
                               </SelectItem>
                             </SelectGroup>
                           </SelectContent>
