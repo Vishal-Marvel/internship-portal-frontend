@@ -24,7 +24,7 @@ const Dashboard = () => {
         if (isTokenExpired()) return;
         if (!type || type == "internship") {
           const studentResponse = await axiosInstance.get(
-            "https://internship-portal-backend.vercel.app/internship/api/v1/students/viewStudent",
+            "/students/viewStudent",
             {
               headers: {
                 Authorization: "Bearer " + token,

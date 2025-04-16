@@ -94,8 +94,7 @@ const FacultyProfile = ({ staff }: { staff: Staff }) => {
   const getImage = async () => {
     if (staff) {
       const imageResponse = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/students/image/" +
-          staff.profile_photo,
+        "/students/image/" + staff.profile_photo,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -124,16 +123,11 @@ const FacultyProfile = ({ staff }: { staff: Staff }) => {
 
       if (values.file[0]) formdata.append("file", values.file[0]);
 
-      await axiosInstance.put(
-        `https://internship-portal-backend.vercel.app/internship/api/v1/staffs/update/` +
-          staff.id,
-        formdata,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      await axiosInstance.put(`/staffs/update/` + staff.id, formdata, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       toast(
         <>
           <CheckCircle2 />

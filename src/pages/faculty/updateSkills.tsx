@@ -36,14 +36,11 @@ const ModifySkills = () => {
     try {
       onOpen("loader");
       if (token && !isTokenExpired()) {
-        const response = await axiosInstance.get(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/skill/skillList",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const response = await axiosInstance.get("/skill/skillList", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         setSkills(response.data.data.skill);
         onSocketClose();
       }

@@ -52,15 +52,11 @@ const SendBackInternship = () => {
         return;
       }
 
-      await axiosInstance.post(
-        `https://internship-portal-backend.vercel.app/internship/api/v1/internships/send-back/${role}/${id}`,
-        values,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      await axiosInstance.post(`/internships/send-back/${role}/${id}`, values, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       form.reset();
       onChange("approval");
 

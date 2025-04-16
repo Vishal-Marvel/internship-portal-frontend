@@ -21,15 +21,11 @@ const ViewInternshipPage = () => {
       if (!type || type == "internship") {
         try {
           onOpen("loader");
-          const response = await axiosInstance.get(
-            "https://internship-portal-backend.vercel.app/internship/api/v1/internships/" +
-              id,
-            {
-              headers: {
-                Authorization: "Bearer " + token,
-              },
-            }
-          );
+          const response = await axiosInstance.get("/internships/" + id, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          });
           setInternship(response.data.data.internshipDetails);
           onClose();
         } catch (error) {

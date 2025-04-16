@@ -59,7 +59,7 @@ const StudentLogin = () => {
     try {
       onOpen("loader");
       const response = await axiosInstance.post(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/students/login",
+        "/students/login",
         { email: values.email + "@sairamtap.edu.in", password: values.password }
       );
       setSession(

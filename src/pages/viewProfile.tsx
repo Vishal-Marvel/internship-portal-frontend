@@ -19,24 +19,18 @@ const ViewProfilePage = () => {
       }
       onOpen("loader");
       if (role.includes("student")) {
-        const response = await axiosInstance.get(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/students/viewStudent",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const response = await axiosInstance.get("/students/viewStudent", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         setStudent(response.data.data.student);
       } else {
-        const response = await axiosInstance.get(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/viewStaff",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const response = await axiosInstance.get("/staffs/viewStaff", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         setStaff(response.data.data.staff);
       }
       onClose();

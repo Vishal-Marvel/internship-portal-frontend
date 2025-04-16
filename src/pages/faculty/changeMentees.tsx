@@ -65,8 +65,7 @@ const ChangeMentees = () => {
       try {
         onOpen("loader");
         const response = await axiosInstance.get(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/mentee-students/" +
-            id,
+          "/staffs/mentee-students/" + id,
           {
             headers: {
               Authorization: "Bearer " + token,
@@ -135,7 +134,7 @@ const ChangeMentees = () => {
         setLoading(true);
         onOpen("loader");
         const response = await axiosInstance.post(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/updateMentees",
+          "/staffs/updateMentees",
           {
             to_staff: toFaculty,
             students,

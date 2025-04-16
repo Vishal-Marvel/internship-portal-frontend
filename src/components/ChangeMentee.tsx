@@ -53,7 +53,7 @@ const ChangeMentee = ({ staff, loading }: Props) => {
   const getStaff = async () => {
     try {
       const response = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/viewMultipleStaff/mentor",
+        "/staffs/viewMultipleStaff/mentor",
         {
           headers: {
             Authorization: "Bearer " + token,

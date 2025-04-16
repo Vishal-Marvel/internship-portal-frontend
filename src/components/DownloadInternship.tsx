@@ -81,7 +81,7 @@ const DownloadInternshipComponent = () => {
       onOpen("loader");
       // console.log(Object.values(values).join(", "));
       const response = await axiosInstance.post(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/internships/download-internships",
+        "/internships/download-internships",
         values,
         {
           headers: {

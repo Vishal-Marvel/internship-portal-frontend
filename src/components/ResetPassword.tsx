@@ -60,9 +60,7 @@ const ResetPassword = () => {
         return;
       }
       await axiosInstance.post(
-        `https://internship-portal-backend.vercel.app/internship/api/v1/${
-          isStudent ? "students" : "staffs"
-        }/change-password`,
+        `/${isStudent ? "students" : "staffs"}/change-password`,
         { oldPassword: values.OPassword, newPassword: values.NPassword },
         {
           headers: {

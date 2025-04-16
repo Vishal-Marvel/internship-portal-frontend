@@ -77,10 +77,10 @@ const FacultyLogin = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       onOpen("loader");
-      const response = await axiosInstance.post(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/login",
-        { email: values.email + college, password: values.password }
-      );
+      const response = await axiosInstance.post("/staffs/login", {
+        email: values.email + college,
+        password: values.password,
+      });
       setSession(
         response.data.data.token,
         response.data.data.roles.toString(),
@@ -110,8 +110,8 @@ const FacultyLogin = () => {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="grid w-full items-center gap-10 ">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <div className="grid w-full items-center gap-6 ">
               <FormField
                 control={form.control}
                 name="sec_sit"

@@ -55,14 +55,11 @@ const ModifyRole = () => {
   const getRoles = async () => {
     try {
       if (token && !isTokenExpired() && !role?.includes("student")) {
-        const response = await axiosInstance.get(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/viewAllRoles",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const response = await axiosInstance.get("/staffs/viewAllRoles", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         setRoles(
           response.data.roles.map((role) => ({
             value: role?.id,
@@ -77,8 +74,7 @@ const ModifyRole = () => {
   const getStaffRoles = async () => {
     try {
       const response = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/viewStaffRoles/" +
-          faculty.id,
+        "/staffs/viewStaffRoles/" + faculty.id,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -115,7 +111,7 @@ const ModifyRole = () => {
       }
 
       const response = await axiosInstance.post(
-        `https://internship-portal-backend.vercel.app/internship/api/v1/staffs/updateRole/${faculty?.id}`,
+        `/staffs/updateRole/${faculty?.id}`,
         { roles: values.roles.map((role) => role.value) },
         {
           headers: {

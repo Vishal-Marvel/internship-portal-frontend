@@ -177,8 +177,7 @@ const StudentInternship = ({ internship }: Props) => {
   const getFiles = async () => {
     if (internship.offer_letter) {
       const response = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/internships/download-file/" +
-          internship.offer_letter,
+        "/internships/download-file/" + internship.offer_letter,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -193,8 +192,7 @@ const StudentInternship = ({ internship }: Props) => {
     }
     if (internship.certificate) {
       const response = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/internships/download-file/" +
-          internship.certificate,
+        "/internships/download-file/" + internship.certificate,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -208,8 +206,7 @@ const StudentInternship = ({ internship }: Props) => {
       setCertificate(url);
     }
     const response = await axiosInstance.get(
-      "https://internship-portal-backend.vercel.app/internship/api/v1/internships/download-report/" +
-        internship.id,
+      "/internships/download-report/" + internship.id,
       {
         headers: {
           Authorization: "Bearer " + token,
@@ -226,8 +223,7 @@ const StudentInternship = ({ internship }: Props) => {
   const getApproval = async () => {
     if (!type || type == "approval") {
       const response = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/internships/approval-status/" +
-          internship.id,
+        "/internships/approval-status/" + internship.id,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -282,8 +278,7 @@ const StudentInternship = ({ internship }: Props) => {
         formdata.append("certificate", values.certificate[0]);
 
       const response = await axiosInstance.put(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/internships/" +
-          internship.id,
+        "/internships/" + internship.id,
         formdata,
         {
           headers: {

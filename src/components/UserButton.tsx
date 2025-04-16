@@ -31,24 +31,18 @@ const UserButton = ({ setClose }: { setClose?: () => void }) => {
     try {
       if (isTokenExpired()) return;
       if (role && role.includes("student")) {
-        const response = await axiosInstance.get(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/students/viewStudent",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const response = await axiosInstance.get("/students/viewStudent", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         setResponse(response.data.data.student);
       } else {
-        const response = await axiosInstance.get(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/viewStaff",
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const response = await axiosInstance.get("/staffs/viewStaff", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         setResponse(response.data.data.staff);
       }
 
@@ -72,8 +66,7 @@ const UserButton = ({ setClose }: { setClose?: () => void }) => {
   const getImage = async () => {
     if (response) {
       const imageResponse = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/students/image/" +
-          response.profile_photo,
+        "/students/image/" + response.profile_photo,
         {
           headers: {
             Authorization: "Bearer " + token,

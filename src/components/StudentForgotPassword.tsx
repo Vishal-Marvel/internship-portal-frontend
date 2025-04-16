@@ -82,10 +82,9 @@ const StudentForgotPassword = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (!OTPShown) {
-        await axiosInstance.post(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/students/forgot-password",
-          { email: values.email + "@sairamtap.edu.in" }
-        );
+        await axiosInstance.post("/students/forgot-password", {
+          email: values.email + "@sairamtap.edu.in",
+        });
         setOTPShown(true);
       } else {
         if (!values.otp) {
@@ -108,14 +107,11 @@ const StudentForgotPassword = () => {
 
           return;
         }
-        await axiosInstance.post(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/students/set-forgot-password",
-          {
-            email: values.email + "@sairamtap.edu.in",
-            otp: values.otp,
-            newPassword: values.NPass,
-          }
-        );
+        await axiosInstance.post("/students/set-forgot-password", {
+          email: values.email + "@sairamtap.edu.in",
+          otp: values.otp,
+          newPassword: values.NPass,
+        });
         form.reset();
         toast(
           <>

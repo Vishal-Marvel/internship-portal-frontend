@@ -108,10 +108,7 @@ const FacultySignIn = () => {
 
       if (values.file[0]) formdata.append("file", values.file[0]);
 
-      const response = await axiosInstance.post(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/signup",
-        formdata
-      );
+      const response = await axiosInstance.post("/staffs/signup", formdata);
       toast(
         <>
           <CheckCircle2 />

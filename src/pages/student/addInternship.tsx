@@ -25,9 +25,7 @@ const AddStudentInternshipPage = () => {
       onOpen("loader");
       if (!role?.includes("student") && student == "") return;
       const response = await axios.get(
-        `https://internship-portal-backend.vercel.app/internship/api/v1/internships/check${
-          !role?.includes("student") ? "/" + student : ""
-        }`,
+        `/internships/check${!role?.includes("student") ? "/" + student : ""}`,
         {
           headers: {
             Authorization: "Bearer " + token,

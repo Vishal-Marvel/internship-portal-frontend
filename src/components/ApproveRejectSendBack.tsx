@@ -22,7 +22,7 @@ const ApproveRejectSendBack = ({ id, role }: Props) => {
       if (isTokenExpired()) return;
       onOpen("loader");
       await axiosInstance.post(
-        `https://internship-portal-backend.vercel.app/internship/api/v1/internships/approval/${role}/${id}`,
+        `/internships/approval/${role}/${id}`,
         {},
         {
           headers: {

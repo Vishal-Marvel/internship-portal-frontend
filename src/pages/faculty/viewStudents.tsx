@@ -61,14 +61,11 @@ const ViewStudents = () => {
         return;
       }
       onOpen("loader");
-      const response = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/viewMultipleStudent",
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const response = await axiosInstance.get("/staffs/viewMultipleStudent", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
       let student = await response.data.data.students;
       student = student?.map((student: Student) => ({
         ...student,

@@ -57,8 +57,7 @@ const ViewMentees = () => {
   const getStudent = async () => {
     try {
       const response = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/staffs/mentee-students/" +
-          id,
+        "/staffs/mentee-students/" + id,
         {
           headers: {
             Authorization: "Bearer " + token,

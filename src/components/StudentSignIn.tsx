@@ -108,9 +108,7 @@ const StudentSignIn = () => {
 
   const getSkills = async () => {
     try {
-      const response = await axiosInstance.get(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/skill/getAllSkills"
-      );
+      const response = await axiosInstance.get("/skill/getAllSkills");
       setSkills(
         response.data.data.skillNames.map((skill, index) => ({
           value: skill.id,
@@ -126,9 +124,9 @@ const StudentSignIn = () => {
     try {
       onOpen("loader");
       const response = await axiosInstance.get(
-        `https://internship-portal-backend.vercel.app/internship/api/v1/staffs/${form.getValues(
-          "department"
-        )}/${form.getValues("sec_sit")}/mentors`
+        `/staffs/${form.getValues("department")}/${form.getValues(
+          "sec_sit"
+        )}/mentors`
       );
       const data = response.data.data;
       setMentors(
@@ -203,10 +201,7 @@ const StudentSignIn = () => {
       if (values.file[0]) formdata.append("file", values.file[0]);
       onOpen("loader");
 
-      const response = await axiosInstance.post(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/students/signup",
-        formdata
-      );
+      const response = await axiosInstance.post("/students/signup", formdata);
       onClose();
       toast(
         <>

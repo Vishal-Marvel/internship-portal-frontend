@@ -135,7 +135,7 @@ const AddStudentInternship = ({ student }: { student: string }) => {
       if (!role?.includes("student")) formdata.append("student_id", student);
       onOpen("loader");
       const response = await axiosInstance.post(
-        "https://internship-portal-backend.vercel.app/internship/api/v1/internships/register",
+        "/internships/register",
         formdata,
         {
           headers: {

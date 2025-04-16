@@ -54,7 +54,7 @@ const RejectInternship = () => {
       }
 
       const res = await axiosInstance.post(
-        `https://internship-portal-backend.vercel.app/internship/api/v1/internships/reject/${role}/${id}`,
+        `/internships/reject/${role}/${id}`,
         values,
         {
           headers: {

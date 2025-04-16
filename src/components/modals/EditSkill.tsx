@@ -57,15 +57,11 @@ const EditSkill = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (token && !isTokenExpired()) {
-        const response = await axiosInstance.put(
-          "https://internship-portal-backend.vercel.app/internship/api/v1/skill/editSkill",
-          values,
-          {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
+        const response = await axiosInstance.put("/skill/editSkill", values, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
         onClose();
 
         form.reset();
