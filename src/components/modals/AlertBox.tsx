@@ -28,7 +28,7 @@ export const AlertBox = () => {
           <AlertDialogDescription>{alertText}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction onClick={handleClose}>Confirm</AlertDialogAction>
+          <AlertDialogAction onClick={handleClose} className="w-1/5">Ok</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

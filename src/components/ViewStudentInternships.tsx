@@ -1,11 +1,14 @@
 import { internshipColumns } from "@/components/data-table-cols/internship-columns";
 import { DataTable } from "@/components/ui/data-table";
 import { useSession } from "@/providers/context/SessionContext";
-import { Internship } from "@/schema";
+import { Internship, Student } from "@/schema";
 import { VisibilityState } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 interface Props {
-  internship: Internship[];
+  internships: Internship[];
+  student?: Student;
+  mine?: boolean;
 }
 function isMobileView() {
   if (window) {
@@ -23,8 +26,9 @@ function isMobileView() {
     }
   }
 }
-const ViewStudentInternships = ({ internship }: Props) => {
+const ViewStudentInternships = ({ internships, student, mine }: Props) => {
   const [width, setWidth] = useState(isMobileView());
+  const navigate = useNavigate();
   useEffect(() => {
     const handleResize = () => {
       setWidth(isMobileView());
@@ -34,7 +38,7 @@ const ViewStudentInternships = ({ internship }: Props) => {
   }, []);
   const { role } = useSession();
   const visibleColumns: VisibilityState = {
-    student_id: !role?.includes("student"),
+    student_id: !role?.includes("student") || !student,
     starting_date: width > 0,
     ending_date: width > 1,
     days: width > 0,
@@ -44,14 +48,20 @@ const ViewStudentInternships = ({ internship }: Props) => {
     batch: false,
     section: false,
     sem: false,
+    actions: role?.includes("student"),
+  };
+
+  const handleRowClick = (row: Internship) => {
+    navigate("/internship/" + row.id);
   };
   return (
     <DataTable
       tableType="internship"
-      title="Student Internships"
-      data={internship}
+      title={`${student ? student.name : mine ? "My" : "Student"} Internships`}
+      data={internships}
       columns={internshipColumns}
       visibleColumns={visibleColumns}
+      onRowClick={handleRowClick}
     />
   );
 };

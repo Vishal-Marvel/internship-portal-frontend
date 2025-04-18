@@ -36,6 +36,7 @@ interface DataTableProps<TData, TValue> {
   visibleColumns: VisibilityState;
   tableType: "internship" | "student" | "faculty" | "skill" | "mentee";
   title?: string;
+  onRowClick: (row: TData) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -44,6 +45,7 @@ export function DataTable<TData, TValue>({
   tableType,
   title,
   visibleColumns,
+  onRowClick
 }: DataTableProps<TData, TValue>) {
   const { onChange, type, onSocketClose } = useSocket();
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -136,6 +138,8 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onDoubleClick={()=>onRowClick(row.original)}
+                 
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

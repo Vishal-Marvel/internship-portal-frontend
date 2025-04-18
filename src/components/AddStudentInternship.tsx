@@ -41,6 +41,7 @@ import { format } from "date-fns";
 import { Calendar } from "./ui/calendar";
 import axiosInstance from "@/lib/axios";
 import { useModal } from "@/hooks/use-model-store";
+import { Student } from "@/schema";
 
 const formSchema = z.object({
   company_name: z.string().min(1, "Company Name is Required").default(""),
@@ -85,7 +86,13 @@ const formSchema = z.object({
   file: z.instanceof(FileList).optional(),
 });
 
-const AddStudentInternship = ({ student }: { student: string }) => {
+const AddStudentInternship = ({
+  student,
+  id,
+}: {
+  student?: Student;
+  id?: string;
+}) => {
   const router = useNavigate();
   const { token, role } = useSession();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -100,10 +107,14 @@ const AddStudentInternship = ({ student }: { student: string }) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const formdata = new FormData();
-      if (!values.file[0])
+      if (!values.file[0]) {
         onOpen("alert", { alertText: "Offer letter File is Required" });
-      if (values.file[0]?.size > 1048576)
+        return;
+      }
+      if (values.file[0]?.size > 1048576) {
         onOpen("alert", { alertText: "Offer Letter File Size exceeded, 1 mb" });
+        return;
+      }
 
       formdata.append("company_name", values.company_name);
       formdata.append("company_address", values.company_address);
@@ -132,7 +143,7 @@ const AddStudentInternship = ({ student }: { student: string }) => {
       formdata.append("domain", values.domain);
 
       formdata.append("file", values.file[0]);
-      if (!role?.includes("student")) formdata.append("student_id", student);
+      if (!role?.includes("student")) formdata.append("student_id", id);
       onOpen("loader");
       const response = await axiosInstance.post(
         "/internships/register",
@@ -190,7 +201,9 @@ const AddStudentInternship = ({ student }: { student: string }) => {
   return (
     <Card className="h-full w-full shadow-2xl bg-white/80 rounded-2xl">
       <CardHeader>
-        <CardTitle>Add Internship</CardTitle>
+        <CardTitle>
+          Add Internship for {student.name} ({student.student_id})
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <ScrollArea className="md:h-[65vh] h-[75vh] w-full bg-white rounded-2xl">
@@ -435,8 +448,13 @@ const AddStudentInternship = ({ student }: { student: string }) => {
 
                               <SelectContent>
                                 <SelectGroup>
-                                  <SelectItem value="I">I</SelectItem>
-                                  <SelectItem value="II">II</SelectItem>
+                                  {!role?.includes("student") && (
+                                    <>
+                                      <SelectItem value="I">I</SelectItem>
+                                      <SelectItem value="II">II</SelectItem>
+                                    </>
+                                  )}
+
                                   <SelectItem value="III">III</SelectItem>
                                   <SelectItem value="IV">IV</SelectItem>
                                   <SelectItem value="V">V</SelectItem>
@@ -522,7 +540,7 @@ const AddStudentInternship = ({ student }: { student: string }) => {
                                     const futureDate = new Date(today);
                                     futureDate.setDate(today.getDate() + 45);
                                     const pastDate = new Date(today);
-                                    pastDate.setDate(today.getDate() - 15);
+                                    pastDate.setDate(today.getDate() - (role?.includes("student") ? 15 : 100));
                                     return date > futureDate || date < pastDate;
                                   }}
                                   initialFocus

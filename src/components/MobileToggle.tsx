@@ -122,7 +122,7 @@ const MobileToggle = () => {
                     )}
                   >
                     <Button className=" uppercase" variant="link">
-                      View Student Internships
+                      View Internships
                     </Button>
                   </Link>
                 </>

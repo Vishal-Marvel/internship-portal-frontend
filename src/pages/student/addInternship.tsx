@@ -2,7 +2,7 @@ import AddStudentInternship from "@/components/AddStudentInternship";
 import { useModal } from "@/hooks/use-model-store";
 import axiosInstance from "@/lib/axios";
 import { useSession } from "@/providers/context/SessionContext";
-import axios from "axios";
+import { Student } from "@/schema";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -15,17 +15,15 @@ const AddStudentInternshipPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get("student");
-  const [student, setStudent] = useState("");
-  useEffect(() => {
-    setStudent(id);
-  }, [id]);
+  const [student, setStudent] = useState<Student>();
+
   const getStatus = async () => {
     try {
       setLoading(true);
       onOpen("loader");
-      if (!role?.includes("student") && student == "") return;
-      const response = await axios.get(
-        `/internships/check${!role?.includes("student") ? "/" + student : ""}`,
+      if (!role?.includes("student") && id == "") return;
+      const response = await axiosInstance.get(
+        `/internships/check${!role?.includes("student") ? "/" + id : ""}`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -34,6 +32,7 @@ const AddStudentInternshipPage = () => {
       );
       setLoading(false);
       onClose();
+      setStudent(response.data.student);
     } catch (error) {
       onClose();
       if (role?.includes("student")) {
@@ -57,11 +56,11 @@ const AddStudentInternshipPage = () => {
 
   useEffect(() => {
     getStatus();
-  }, [student]);
+  }, [id]);
 
   return (
     <div className="w-full md:w-fit">
-      {!loading && <AddStudentInternship student={student} />}
+      {!loading && <AddStudentInternship id={id} student={student} />}
     </div>
   );
 };

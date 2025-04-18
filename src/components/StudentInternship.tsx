@@ -29,12 +29,12 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { CalendarIcon, CheckCircle2, Download, X } from "lucide-react";
+import { ArrowLeft, CalendarIcon, CheckCircle2, Download } from "lucide-react";
 import { useSession } from "@/providers/context/SessionContext";
 import { Link, useNavigate } from "react-router-dom";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
-import { ApprovalStatus, FileType, Internship, Student } from "@/schema";
+import { ApprovalStatus, Internship } from "@/schema";
 import axiosInstance from "@/lib/axios";
 import { cn } from "@/lib/utils";
 import { Textarea } from "./ui/textarea";
@@ -147,7 +147,10 @@ const StudentInternship = ({ internship }: Props) => {
       form.setValue("current_cgpa", internship.current_cgpa);
       form.setValue("sem", internship.sem);
       form.setValue("mode_of_intern", internship.mode_of_intern);
-      form.setValue("starting_date", internship.starting_date);
+      const startingDate = new Date(internship.starting_date);
+      form.setValue("starting_date", startingDate);
+
+      console.log(startingDate);
       const noOfDays = internship.no_of_days;
       const doubledValue =
         internship.mode_of_intern == "Online" ? noOfDays * 2 : noOfDays;
@@ -305,12 +308,19 @@ const StudentInternship = ({ internship }: Props) => {
       // console.error(error.response.data.message);
     }
   };
+  const navigate = useNavigate();
 
   return (
     <Card className="h-full w-full shadow-2xl bg-white/80 rounded-2xl">
       <CardHeader>
         <div className="w-full flex justify-between items-center">
-          <CardTitle>Internship Details</CardTitle>
+          <CardTitle className="flex items-center gap-2 justify-center text-center">
+            <ArrowLeft
+              className=" h-5 w-5 cursor-pointer"
+              onClick={() => navigate(-1)}
+            />{" "}
+            Internship Details
+          </CardTitle>
           <div className="flex item-center gap-4">
             {!isStudent && !isRejected && (
               <Button
@@ -339,7 +349,7 @@ const StudentInternship = ({ internship }: Props) => {
         <ScrollArea className="md:h-[70vh] h-[60vh] w-full bg-white rounded-2xl">
           <Form {...form}>
             <form
-              onSubmit={(e) => !update && form.handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit(onSubmit)}
               className="space-y-8 p-4"
             >
               <div className=" w-full gap-8 flex flex-col items-start">
@@ -627,8 +637,12 @@ const StudentInternship = ({ internship }: Props) => {
 
                               <SelectContent>
                                 <SelectGroup>
-                                  <SelectItem value="I">I</SelectItem>
-                                  <SelectItem value="II">II</SelectItem>
+                                {!role?.includes("student") && (
+                                    <>
+                                      <SelectItem value="I">I</SelectItem>
+                                      <SelectItem value="II">II</SelectItem>
+                                    </>
+                                  )}
                                   <SelectItem value="III">III</SelectItem>
                                   <SelectItem value="IV">IV</SelectItem>
                                   <SelectItem value="V">V</SelectItem>
@@ -718,7 +732,7 @@ const StudentInternship = ({ internship }: Props) => {
                                     const futureDate = new Date(today);
                                     futureDate.setDate(today.getDate() + 45);
                                     const pastDate = new Date(today);
-                                    pastDate.setDate(today.getDate() - 15);
+                                    pastDate.setDate(today.getDate() - (role?.includes("student") ? 15 : 100));
                                     return date > futureDate || date < pastDate;
                                   }}
                                   initialFocus
@@ -816,26 +830,33 @@ const StudentInternship = ({ internship }: Props) => {
                         <FormItem>
                           <FormLabel>Offer Letter</FormLabel>
                           <FormControl>
-                            <Input
-                              disabled={isLoading}
-                              className="bg-slate-200 shadow-inner"
-                              type="file"
-                              placeholder="Insert Offer Letter"
-                              accept=".pdf"
-                              size={1024 * 1024 * 5}
-                              {...offer_letterRef}
-                            />
+                            {update && (
+                              <Input
+                                disabled={isLoading}
+                                className="bg-slate-200 shadow-inner"
+                                type="file"
+                                placeholder="Insert Offer Letter"
+                                accept=".pdf"
+                                size={1024 * 1024 * 5}
+                                {...offer_letterRef}
+                              />
+                            )}
                           </FormControl>
                           <FormMessage />
                           <FormDescription>
                             {offer_letter && (
                               <Link
-                                className="hover:underline text-blue-400"
+                                className={cn(
+                                  "hover:underline flex items-center gap-2 px-4 text-blue-500",
+                                  !update &&
+                                    "bg-slate-200 h-10 w-full rounded-md shadow-inner text-black "
+                                )}
                                 to={offer_letter}
                                 download={`${internship.company_name}_offerletter.pdf`}
                                 target="_blank"
                               >
-                                click to download
+                                <Download />
+                                {`${internship.company_name}_offerletter.pdf`}
                               </Link>
                             )}
                           </FormDescription>
@@ -845,43 +866,35 @@ const StudentInternship = ({ internship }: Props) => {
                   </div>
                 </div>
               </div>
-              {update && (
-                <div className="flex flex-1 w-full space-y-1.5 pt-2">
-                  <Button
-                    className="w-full"
-                    type="submit"
-                    disabled={isLoading}
-                    variant="primary"
-                  >
-                    Update Internship
-                  </Button>
-                </div>
-              )}
-              <div className="gap-4 flex flex-col w-full">
-                <span className="text-xl font-semibold">
-                  Faculty Wise Approval Status{" "}
-                  <span
-                    onClick={() => setApprovalStatus(!approvalStatus)}
-                    className="text-blue-500 text-sm font-normal hover:underline cursor-pointer"
-                  >
-                    (Click to {approvalStatus ? "Close" : "View"})
+
+              {!update && (
+                <div className="gap-4 flex flex-col w-full">
+                  <span className="text-xl font-semibold">
+                    Faculty Wise Approval Status{" "}
+                    <span
+                      onClick={() => setApprovalStatus(!approvalStatus)}
+                      className="text-blue-500 text-sm font-normal hover:underline cursor-pointer"
+                    >
+                      (Click to {approvalStatus ? "Close" : "View"})
+                    </span>
                   </span>
-                </span>
-                <div
-                  className={cn(
-                    !approvalStatus && "max-h-[0px] overflow-hidden"
-                  )}
-                >
-                  <div className="grid grid-cols-1 gap-8 md:pl-3 items-start ">
-                    <Approval
-                      approval={approval}
-                      role={role}
-                      id={internship?.id}
-                      rejected={isRejected}
-                    />
+                  <div
+                    className={cn(
+                      !approvalStatus && "max-h-[0px] overflow-hidden"
+                    )}
+                  >
+                    <div className="grid grid-cols-1 gap-8 md:pl-3 items-start ">
+                      <Approval
+                        approval={approval}
+                        role={role}
+                        id={internship?.id}
+                        rejected={isRejected}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+
               {postCompletion && (
                 <div className="gap-4 flex flex-col w-full">
                   <span className="text-xl font-semibold">Post Completion</span>
@@ -894,33 +907,59 @@ const StudentInternship = ({ internship }: Props) => {
                         <FormItem>
                           <FormLabel>Certificate</FormLabel>
                           <FormControl>
-                            <Input
-                              disabled={isLoading}
-                              className="bg-slate-200 shadow-inner"
-                              type="file"
-                              placeholder="Insert Offer Letter"
-                              accept=".pdf"
-                              size={1024 * 1024 * 5}
-                              {...certificateRef}
-                            />
+                            {update && (
+                              <Input
+                                disabled={isLoading}
+                                className="bg-slate-200 shadow-inner"
+                                type="file"
+                                placeholder="Insert Offer Letter"
+                                accept=".pdf"
+                                size={1024 * 1024 * 5}
+                                {...certificateRef}
+                              />
+                            )}
                           </FormControl>
                           <FormMessage />
                           <FormDescription>
                             {certificate && (
                               <Link
-                                className="hover:underline text-blue-400"
+                                className={cn(
+                                  "hover:underline flex items-center gap-2 px-4 text-blue-500",
+                                  !update &&
+                                    "bg-slate-200 h-10 w-full rounded-md shadow-inner text-black "
+                                )}
                                 to={certificate}
                                 download={`${internship.company_name}_certificate.pdf`}
                                 target="_blank"
                               >
-                                click to view
+                                <Download />
+                                {`${internship.company_name}_certificate.pdf`}
                               </Link>
+                            )}
+                            {(!update && !certificate) && (
+                              <div>
+                                <p className="text-sm flex items-center justify-center bg-slate-200 h-10 w-full rounded-md shadow-inner text-black">
+                                  No Certificate Uploaded
+                                </p>
+                              </div>
                             )}
                           </FormDescription>
                         </FormItem>
                       )}
                     />
                   </div>
+                </div>
+              )}
+              {update && (
+                <div className="flex flex-1 w-full space-y-1.5 pt-2">
+                  <Button
+                    className="w-full"
+                    type="submit"
+                    disabled={isLoading}
+                    variant="primary"
+                  >
+                    Update Internship
+                  </Button>
                 </div>
               )}
             </form>

@@ -50,7 +50,7 @@ const Dashboard = () => {
       <div className="flex justify-center items-center w-full gap-5">
         <div
           className={cn(
-            !visible ? "hidden " : "h-[70vh] w-[30vw]",
+            !visible ? "hidden " : "h-[70vh] md:w-[30vw] w-full",
             " text-center bg-white/80 p-4 rounded-lg m-2 transition-all duration-700 ease-in"
           )}
         >

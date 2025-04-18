@@ -73,19 +73,28 @@ const ViewInternships = () => {
     <div className="relative">
       {!role.includes("student") && (
         <Link to={"/download"}>
-          <Button className="absolute top-2 right-3" variant="primary">
+          <Button
+            className={`absolute top-2  ${
+              student ? "right-24 -translate-x-1/2" : "right-3"
+            }`}
+            variant={student ? "default" : "primary"}
+          >
             <Download className="mr-2 h-5 w-5" /> Download
           </Button>
         </Link>
       )}
-      {role.includes("student") && (
-        <Link to={"/addInternship"} className="absolute top-2 right-3">
+      {(role.includes("student") || student) && (
+        <Link to={"/addInternship" + (student ? `?student=${student}` : "")} className="absolute top-2 right-3">
           <Button variant="primary" className="p-2">
             <CirclePlus className="h-5 w-5 mr-2" /> Add Internship
           </Button>
         </Link>
       )}
-      <ViewStudentInternships internship={internships} />
+      <ViewStudentInternships
+        internships={internships}
+        student={student && internships[0]?.student}
+        mine={role?.includes("student")}
+      />
     </div>
   );
 };

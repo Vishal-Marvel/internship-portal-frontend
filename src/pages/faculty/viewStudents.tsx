@@ -8,6 +8,7 @@ import { VisibilityState } from "@tanstack/react-table";
 import { isToday } from "date-fns";
 import { AlertCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 function isMobileView() {
   if (window) {
@@ -35,6 +36,7 @@ const ViewStudents = () => {
   const isCEO = role?.includes("ceo");
   const isInternshipCoordinator = role?.includes("internshipcoordinator");
   const isHOD = role?.includes("hod");
+  const [students, setStudent] = useState<Student[]>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -54,7 +56,6 @@ const ViewStudents = () => {
     placement_status: false,
     total_days_internship: width > 0 && (isMentor || isInternshipCoordinator),
   };
-  const [student, setStudent] = useState<Student[]>([]);
   const getStudent = async () => {
     try {
       if (!token || isTokenExpired()) {
@@ -87,14 +88,20 @@ const ViewStudents = () => {
   useEffect(() => {
     getStudent();
   }, []);
+  const navigate = useNavigate();
+  const handleRowClick = (student: Student)=>{
+    navigate("/studentInternships?student=" + student.id);
+
+  }
   return (
     <div className="grid place-items-center w-full">
       <DataTable
         title="Students"
         tableType="student"
-        data={student}
+        data={students}
         columns={studentColumns}
         visibleColumns={visibleColumns}
+        onRowClick={handleRowClick}
       />
     </div>
   );
