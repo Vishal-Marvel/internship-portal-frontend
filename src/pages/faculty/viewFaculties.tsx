@@ -9,7 +9,7 @@ import { Staff } from "@/schema";
 import { VisibilityState } from "@tanstack/react-table";
 import { AlertCircle, CirclePlus } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 function isMobileView() {
   if (window) {
@@ -73,6 +73,10 @@ const ViewFaculties = () => {
   useEffect(() => {
     if (!type || type == "staff") getStaff();
   }, [type]);
+  const navigate = useNavigate();
+  const handleRowClick = (row: Staff) => {
+    if (row.roles.includes("mentor")) navigate("/mentees/" + row.id);
+  };
   return (
     <div className="relative flex  justify-center items-center">
       <Link to={"/faculty/signin"} className="absolute top-3 right-3">
@@ -86,6 +90,7 @@ const ViewFaculties = () => {
         data={faculty}
         columns={facultyColumns}
         visibleColumns={visibleColumns}
+        onRowClick={handleRowClick}
       />
     </div>
   );

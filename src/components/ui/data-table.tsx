@@ -26,7 +26,6 @@ import {
 
 import { DataTableToolbar } from "@/components/ui/data-table/data-toolbar";
 import { ScrollArea, ScrollBar } from "./scroll-area";
-import { DataTablePagination } from "./data-table/data-pagination";
 import { cn } from "@/lib/utils";
 import { useSocket } from "@/hooks/use-socket";
 
@@ -36,7 +35,7 @@ interface DataTableProps<TData, TValue> {
   visibleColumns: VisibilityState;
   tableType: "internship" | "student" | "faculty" | "skill" | "mentee";
   title?: string;
-  onRowClick: (row: TData) => void;
+  onRowClick?: (row: TData) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -73,6 +72,11 @@ export function DataTable<TData, TValue>({
       onSocketClose();
     }
   }, [type]);
+  const handleRowClick = (row: TData) => {
+    if (onRowClick) {
+      onRowClick(row);
+    }
+  }
 
   const table = useReactTable({
     data,
@@ -138,7 +142,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onDoubleClick={()=>onRowClick(row.original)}
+                  onDoubleClick={()=>handleRowClick(row.original)}
                  
                 >
                   {row.getVisibleCells().map((cell) => (
