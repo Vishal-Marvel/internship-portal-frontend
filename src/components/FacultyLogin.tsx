@@ -44,7 +44,7 @@ const FacultyLogin = () => {
   const router = useNavigate();
   const { setTheme } = useTheme();
   const { onOpen, onClose } = useModal();
-  const { setSession } = useSession();
+  const { setSession } = useSession(); 
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

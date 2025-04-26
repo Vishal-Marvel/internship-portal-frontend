@@ -42,15 +42,17 @@ const Dashboard = () => {
       getData();
     }, [type]);
     useEffect(() => {
-      const timer = setTimeout(() => setVisible(false), 3000);
-      return () => clearTimeout(timer);
-    }, []);
+      if (student) {
+        const timer = setTimeout(() => setVisible(false), 3000);
+        return () => clearTimeout(timer);
+      }
+    }, [student]);
 
     return (
       <div className="flex justify-center items-center w-full gap-5">
         <div
           className={cn(
-            !visible ? "hidden " : "h-[70vh] md:w-[30vw] w-full",
+            !visible ? "hidden " : "lg:h-[70vh] md:w-[30vw] w-full",
             " text-center bg-white/80 p-4 rounded-lg m-2 transition-all duration-700 ease-in"
           )}
         >

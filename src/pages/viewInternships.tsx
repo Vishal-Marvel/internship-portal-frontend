@@ -71,7 +71,7 @@ const ViewInternships = () => {
 
   return (
     <div className="relative">
-      {!role.includes("student") && (
+      {!role?.includes("student") && (
         <Link to={"/download"}>
           <Button
             className={`absolute top-2  ${
@@ -83,7 +83,7 @@ const ViewInternships = () => {
           </Button>
         </Link>
       )}
-      {(role.includes("student") || student) && (
+      {(role?.includes("student") || student) && (
         <Link to={"/addInternship" + (student ? `?student=${student}` : "")} className="absolute top-2 right-3">
           <Button variant="primary" className="p-2">
             <CirclePlus className="h-5 w-5 mr-2" /> Add Internship

@@ -19,6 +19,7 @@ import ModifySkills from "./pages/faculty/updateSkills";
 import ChangeMentees from "./pages/faculty/changeMentees";
 import ResetPassword from "./pages/resetPassword";
 import DownloadInternship from "./pages/faculty/downloadInternship";
+import ExpiredPage from "./pages/expired";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <div className="md:min-h-[80%] md:min-w-[85%] md:max-h-[80%] md:max-w-[85%] w-screen h-full grid place-items-center justify-center items-center pt-5 md:pt-0">
             <Routes>
               <Route path="/" element={<Login />} />
+              <Route path="/expired" element={<ExpiredPage />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/forgetpass" element={<ForgotPassword />} />
               <Route path="/addInternship" element={<AddInternshipPage />} />

@@ -87,11 +87,20 @@ export const internshipColumns: ColumnDef<Internship>[] = [
     header: ({ column }) => {
       return <div className="text-center">Company Name</div>;
     },
-    cell: ({ row }) => (
-      <div className="text-center font-medium">
-        {row.getValue("company_name")}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const internship = row.original;
+      return (
+        <div className="text-center font-medium">
+          <Link
+            className="hover:underline"
+            to={"/internship/" + internship.id}
+          >
+            {row.getValue("company_name")}
+          </Link>
+        </div>
+      );
+    }
+     
   },
   {
     accessorKey: "starting_date",
@@ -203,47 +212,47 @@ export const internshipColumns: ColumnDef<Internship>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const internship = row.original;
-      const { role } = useSession();
-      const { onOpen } = useModal();
-      const navigate = useNavigate();
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const internship = row.original;
+  //     const { role } = useSession();
+  //     const { onOpen } = useModal();
+  //     const navigate = useNavigate();
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open menu</span>
+  //             <MoreHorizontal className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => {
-                navigate("/internship/" + internship.id);
-              }}
-            >
-              View Internship
-            </DropdownMenuItem>
-            {role?.includes("student") &&
-              internship.approval_status == "Approved" &&
-              !internship.certificate && (
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => {
-                    onOpen("completeInternship", { internship });
-                  }}
-                >
-                  Upload Certificate
-                </DropdownMenuItem>
-              )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
+  //           <DropdownMenuItem
+  //             className="cursor-pointer"
+  //             onClick={() => {
+  //               navigate("/internship/" + internship.id);
+  //             }}
+  //           >
+  //             View Internship
+  //           </DropdownMenuItem>
+  //           {role?.includes("student") &&
+  //             internship.approval_status == "Approved" &&
+  //             !internship.certificate && (
+  //               <DropdownMenuItem
+  //                 className="cursor-pointer"
+  //                 onClick={() => {
+  //                   onOpen("completeInternship", { internship });
+  //                 }}
+  //               >
+  //                 Upload Certificate
+  //               </DropdownMenuItem>
+  //             )}
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     );
+  //   },
+  // },
 ];

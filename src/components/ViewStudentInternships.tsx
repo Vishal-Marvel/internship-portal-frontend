@@ -38,7 +38,7 @@ const ViewStudentInternships = ({ internships, student, mine }: Props) => {
   }, []);
   const { role } = useSession();
   const visibleColumns: VisibilityState = {
-    student_id: !role?.includes("student") || !student,
+    student_id: !role?.includes("student") && !student,
     starting_date: width > 0,
     ending_date: width > 1,
     days: width > 0,
@@ -48,7 +48,7 @@ const ViewStudentInternships = ({ internships, student, mine }: Props) => {
     batch: false,
     section: false,
     sem: false,
-    actions: role?.includes("student"),
+    actions: false,
   };
 
   const handleRowClick = (row: Internship) => {

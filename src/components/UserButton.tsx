@@ -24,7 +24,7 @@ const UserButton = ({ setClose }: { setClose?: () => void }) => {
   const [response, setResponse] = useState<Student | Staff>();
   const [image, setImage] = useState<string>("");
   const [open, setOpen] = useState(false);
-  const router = useNavigate();
+  const navigate = useNavigate();
   const { setTheme } = useTheme();
 
   const getData = async () => {
@@ -59,7 +59,7 @@ const UserButton = ({ setClose }: { setClose?: () => void }) => {
 
   const handleLogout = () => {
     setOpen(false);
-    router("/");
+    navigate("/");
     setTheme("default");
     clearSession();
   };

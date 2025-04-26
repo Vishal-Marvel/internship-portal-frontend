@@ -5,7 +5,7 @@ import { Theme, ThemeProvider, useTheme } from "./theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ModalProvider } from "./model-provider";
 
-export const publicRoutes = ["/student/signin", "/", "/forgetpass"];
+export const publicRoutes = ["/student/signin", "/", "/forgetpass", "/expired"];
 
 export const facultyRoutes = [
   "/faculties",
@@ -34,6 +34,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
     }
 
     if (facultyRoutes.includes(pathname) && role?.includes("student")) {
+      setTheme("default");
+
       navigate("/");
     }
     setTheme(clg);
@@ -61,6 +63,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   const clearSession = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("portal-theme")
     setToken(null);
     setClg(null);
     setRole(null);
